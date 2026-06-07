@@ -1,0 +1,26 @@
+{
+  "name": "Usery OS Build & Test Environment",
+  "dockerFile": "Dockerfile",
+  "runArgs": [
+    "--privileged"
+  ],
+  "forwardPorts": [
+    6080
+  ],
+  "portsAttributes": {
+    "6080": {
+      "label": "noVNC Live GUI",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "timonwong.shellcheck",
+        "redhat.vscode-yaml"
+      ]
+    }
+  },
+  "postCreateCommand": "echo 'Daytona.io workspace ready! Run ./build_iso.sh to build Usery OS, then ./run_vm.sh to boot and stream it.'"
+}

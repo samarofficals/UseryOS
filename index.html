@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usery OS - Interactive Showcase</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-nordic">
+
+  <!-- ==================== BOOT SCREEN ==================== -->
+  <div id="boot-screen" class="screen active">
+    <div class="boot-terminal">
+      <div id="boot-log"></div>
+      <div class="cursor">_</div>
+    </div>
+  </div>
+
+  <!-- ==================== LOGIN SCREEN ==================== -->
+  <div id="login-screen" class="screen">
+    <div class="glass-card login-card">
+      <div class="user-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+        </svg>
+      </div>
+      <h2 class="username">usery</h2>
+      <form id="login-form">
+        <div class="input-group">
+          <input type="password" id="login-password" placeholder="Password" autofocus autocomplete="current-password">
+          <button type="submit" class="login-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </button>
+        </div>
+      </form>
+      <div class="login-hint">Press Enter to Login (Password is empty)</div>
+    </div>
+  </div>
+
+  <!-- ==================== DESKTOP SCREEN ==================== -->
+  <div id="desktop-screen" class="screen">
+    <div class="desktop-wallpaper"></div>
+
+    <!-- POLYBAR (Status Bar) -->
+    <header class="polybar">
+      <div class="polybar-left">
+        <!-- Rofi Menu Trigger -->
+        <button id="rofi-trigger" title="Launch applications (Super Key)">
+          <span class="logo-text">U</span>
+        </button>
+        <!-- Workspaces -->
+        <div class="workspace-switcher">
+          <button class="ws-btn active" data-ws="1">1</button>
+          <button class="ws-btn" data-ws="2">2</button>
+          <button class="ws-btn" data-ws="3">3</button>
+          <button class="ws-btn" data-ws="4">4</button>
+          <button class="ws-btn" data-ws="5">5</button>
+        </div>
+      </div>
+      
+      <div class="polybar-center">
+        <span id="active-window-title">Desktop</span>
+      </div>
+      
+      <div class="polybar-right">
+        <!-- System Status Modules -->
+        <div class="bar-module cpu-module" title="Simulated CPU Usage">
+          <span class="module-icon">CPU</span>
+          <span class="module-val" id="cpu-val">12%</span>
+        </div>
+        <div class="bar-module ram-module" title="Simulated RAM Usage">
+          <span class="module-icon">RAM</span>
+          <span class="module-val" id="ram-val">1.2G</span>
+        </div>
+        <div class="bar-module datetime-module" id="datetime-widget">
+          <span id="clock-time">12:00 PM</span>
+        </div>
+        <!-- Quick Settings / Power Menu -->
+        <button id="power-trigger" class="power-btn" title="System Power Options">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- DESKTOP CONTAINER (For icons & windows) -->
+    <main class="desktop-area">
+      <!-- Desktop Shortcuts -->
+      <div class="desktop-shortcuts">
+        <div class="shortcut" data-app="terminal">
+          <div class="shortcut-icon icon-terminal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+            </svg>
+          </div>
+          <span class="shortcut-label">Terminal</span>
+        </div>
+        <div class="shortcut" data-app="files">
+          <div class="shortcut-icon icon-files">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+            </svg>
+          </div>
+          <span class="shortcut-label">Files</span>
+        </div>
+        <div class="shortcut" data-app="browser">
+          <div class="shortcut-icon icon-browser">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-.554-8.243-1.556m16.5 0c.969 2.726 1.243 5.724 1.243 8.794h-1.5M3.757 7.518A11.95 11.95 0 0 1 12 9c3.048 0 5.835-.568 8.368-1.593m-16.611 0C2.788 10.134 2.5 13.03 2.5 16h1.5M12 9V3" />
+            </svg>
+          </div>
+          <span class="shortcut-label">Web Browser</span>
+        </div>
+        <div class="shortcut" data-app="editor">
+          <div class="shortcut-icon icon-editor">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+            </svg>
+          </div>
+          <span class="shortcut-label">Text Editor</span>
+        </div>
+        <div class="shortcut" data-app="settings">
+          <div class="shortcut-icon icon-settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.43l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.991l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+            </svg>
+          </div>
+          <span class="shortcut-label">Settings</span>
+        </div>
+      </div>
+
+      <!-- System Stats Floating Widget -->
+      <div class="desktop-widget glass-card">
+        <div class="widget-header">Usery OS Monitor</div>
+        <div class="widget-stats">
+          <div class="stat-circle" id="cpu-circle" style="--percent: 12;">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle" id="cpu-circle-path" stroke-dasharray="12, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <div class="circle-label">
+              <span class="circle-val" id="cpu-pct">12%</span>
+              <span class="circle-name">CPU</span>
+            </div>
+          </div>
+          <div class="stat-circle" id="ram-circle" style="--percent: 30;">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle" id="ram-circle-path" stroke-dasharray="30, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <div class="circle-label">
+              <span class="circle-val" id="ram-pct">30%</span>
+              <span class="circle-name">RAM</span>
+            </div>
+          </div>
+        </div>
+        <div class="widget-footer">Uptime: <span id="uptime-val">0h 0m</span></div>
+      </div>
+
+      <!-- ==================== FLOATING WINDOWS ==================== -->
+      
+      <!-- 1. TERMINAL -->
+      <div id="win-terminal" class="window glass-card" style="width: 680px; height: 440px; top: 15%; left: 20%;">
+        <div class="window-header drag-handle">
+          <div class="header-left">
+            <span class="app-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/></svg>
+            </span>
+            <span class="window-title">usery@usery-os: ~</span>
+          </div>
+          <div class="header-right window-controls">
+            <button class="win-btn minimize" title="Minimize">─</button>
+            <button class="win-btn maximize" title="Maximize">⛶</button>
+            <button class="win-btn close" title="Close">×</button>
+          </div>
+        </div>
+        <div class="window-content term-content">
+          <div id="term-history"></div>
+          <div class="term-prompt-line">
+            <span class="prompt-user">usery@usery-os</span><span class="prompt-separator"> ~ $ </span><span id="term-input-field" contenteditable="true" spellcheck="false"></span><span class="term-cursor"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. FILE MANAGER -->
+      <div id="win-files" class="window glass-card hidden" style="width: 640px; height: 400px; top: 20%; left: 25%;">
+        <div class="window-header drag-handle">
+          <div class="header-left">
+            <span class="app-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"/></svg>
+            </span>
+            <span class="window-title">File Manager</span>
+          </div>
+          <div class="header-right window-controls">
+            <button class="win-btn minimize">─</button>
+            <button class="win-btn maximize">⛶</button>
+            <button class="win-btn close">×</button>
+          </div>
+        </div>
+        <div class="window-content file-manager-layout">
+          <!-- Sidebar -->
+          <div class="fm-sidebar">
+            <div class="sidebar-item active" data-folder="home">
+              <span class="item-icon">⚡</span> Home
+            </div>
+            <div class="sidebar-item" data-folder="documents">
+              <span class="item-icon">📂</span> Documents
+            </div>
+            <div class="sidebar-item" data-folder="wallpapers">
+              <span class="item-icon">🖼️</span> Wallpapers
+            </div>
+          </div>
+          <!-- Grid view -->
+          <div class="fm-view" id="fm-grid">
+            <!-- Dynamic elements loaded via js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. WEB BROWSER -->
+      <div id="win-browser" class="window glass-card hidden" style="width: 760px; height: 480px; top: 12%; left: 18%;">
+        <div class="window-header drag-handle">
+          <div class="header-left">
+            <span class="app-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-.554-8.243-1.556m16.5 0c.969 2.726 1.243 5.724 1.243 8.794h-1.5M3.757 7.518A11.95 11.95 0 0 1 12 9c3.048 0 5.835-.568 8.368-1.593m-16.611 0C2.788 10.134 2.5 13.03 2.5 16h1.5M12 9V3"/></svg>
+            </span>
+            <span class="window-title">Usery Web</span>
+          </div>
+          <div class="header-right window-controls">
+            <button class="win-btn minimize">─</button>
+            <button class="win-btn maximize">⛶</button>
+            <button class="win-btn close">×</button>
+          </div>
+        </div>
+        <div class="window-content browser-layout">
+          <div class="browser-nav">
+            <button class="nav-btn" disabled>&lt;</button>
+            <button class="nav-btn" disabled>&gt;</button>
+            <input type="text" id="browser-url" value="https://daytona.io" readonly>
+            <button class="nav-btn refresh">⟳</button>
+          </div>
+          <div class="browser-page" id="browser-content">
+            <!-- Simulated web page -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. TEXT EDITOR -->
+      <div id="win-editor" class="window glass-card hidden" style="width: 580px; height: 380px; top: 25%; left: 30%;">
+        <div class="window-header drag-handle">
+          <div class="header-left">
+            <span class="app-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+            </span>
+            <span class="window-title">FeatherPad (Text Editor)</span>
+          </div>
+          <div class="header-right window-controls">
+            <button class="win-btn minimize">─</button>
+            <button class="win-btn maximize">⛶</button>
+            <button class="win-btn close">×</button>
+          </div>
+        </div>
+        <div class="window-content editor-layout">
+          <div class="editor-menu">
+            <span>File</span>
+            <span>Edit</span>
+            <span>Search</span>
+            <span>Options</span>
+            <span>Help</span>
+          </div>
+          <textarea class="editor-textarea" placeholder="Start typing..."></textarea>
+        </div>
+      </div>
+
+      <!-- 5. SETTINGS -->
+      <div id="win-settings" class="window glass-card hidden" style="width: 500px; height: 420px; top: 18%; left: 35%;">
+        <div class="window-header drag-handle">
+          <div class="header-left">
+            <span class="app-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.43l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.991l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
+            <span class="window-title">Usery Settings</span>
+          </div>
+          <div class="header-right window-controls">
+            <button class="win-btn minimize">─</button>
+            <button class="win-btn maximize">⛶</button>
+            <button class="win-btn close">×</button>
+          </div>
+        </div>
+        <div class="window-content settings-layout">
+          <h3>Desktop Appearance</h3>
+          
+          <div class="settings-section">
+            <label>System Theme</label>
+            <div class="theme-picker">
+              <button class="theme-option active" data-theme="nordic" style="background: linear-gradient(135deg, #2e3440, #88c0d0);">Nordic Glacier</button>
+              <button class="theme-option" data-theme="dracula" style="background: linear-gradient(135deg, #282a36, #bd93f9);">Dracula Dark</button>
+              <button class="theme-option" data-theme="cyberpunk" style="background: linear-gradient(135deg, #1a0826, #ff79c6);">Cyberpunk Neon</button>
+            </div>
+          </div>
+          
+          <div class="settings-section">
+            <label>Window Transparency</label>
+            <div class="range-group">
+              <input type="range" id="opacity-slider" min="60" max="100" value="85">
+              <span id="opacity-value">85%</span>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <label>Animations Speed</label>
+            <div class="select-group">
+              <select id="animation-speed">
+                <option value="0.3s" selected>Normal (Fast & Responsive)</option>
+                <option value="0.6s">Slow (Showcase Mode)</option>
+                <option value="0s">None (Instant)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="settings-footer">
+            <button id="apply-settings-btn" class="action-btn">Apply Settings</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== ROFI APP LAUNCHER ==================== -->
+      <div id="rofi-launcher" class="rofi-container hidden">
+        <div class="rofi-card glass-card">
+          <div class="rofi-search">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="rofi-search-input" placeholder="Search applications..." autocomplete="off">
+          </div>
+          <div class="rofi-apps" id="rofi-apps-list">
+            <div class="rofi-app" data-app="terminal">
+              <div class="app-icon icon-terminal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/></svg>
+              </div>
+              <div class="app-info">
+                <span class="app-name">Alacritty</span>
+                <span class="app-desc">Sleek GPU accelerated terminal emulator</span>
+              </div>
+            </div>
+            <div class="rofi-app" data-app="files">
+              <div class="app-icon icon-files">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"/></svg>
+              </div>
+              <div class="app-info">
+                <span class="app-name">Thunar File Manager</span>
+                <span class="app-desc">Organize and browse system files</span>
+              </div>
+            </div>
+            <div class="rofi-app" data-app="browser">
+              <div class="app-icon icon-browser">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-.554-8.243-1.556m16.5 0c.969 2.726 1.243 5.724 1.243 8.794h-1.5M3.757 7.518A11.95 11.95 0 0 1 12 9c3.048 0 5.835-.568 8.368-1.593m-16.611 0C2.788 10.134 2.5 13.03 2.5 16h1.5M12 9V3"/></svg>
+              </div>
+              <div class="app-info">
+                <span class="app-name">Usery Web</span>
+                <span class="app-desc">Browse the world wide web securely</span>
+              </div>
+            </div>
+            <div class="rofi-app" data-app="editor">
+              <div class="app-icon icon-editor">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+              </div>
+              <div class="app-info">
+                <span class="app-name">FeatherPad</span>
+                <span class="app-desc">Lightweight tabbed text editor</span>
+              </div>
+            </div>
+            <div class="rofi-app" data-app="settings">
+              <div class="app-icon icon-settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.43l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.991l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><circle cx="12" cy="12" r="3"/></svg>
+              </div>
+              <div class="app-info">
+                <span class="app-name">Usery OS Settings</span>
+                <span class="app-desc">Tweak themes, background, and UI performance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== POWER MENU ==================== -->
+      <div id="power-menu" class="power-menu-container hidden">
+        <div class="power-card glass-card">
+          <h2>Usery OS System</h2>
+          <div class="power-options">
+            <div class="power-opt" id="power-lock">
+              <div class="opt-icon">🔒</div>
+              <span>Lock Session</span>
+            </div>
+            <div class="power-opt" id="power-reboot">
+              <div class="opt-icon">🔄</div>
+              <span>Reboot OS</span>
+            </div>
+            <div class="power-opt" id="power-shutdown">
+              <div class="opt-icon">❌</div>
+              <span>Shutdown</span>
+            </div>
+          </div>
+          <button id="power-cancel" class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
